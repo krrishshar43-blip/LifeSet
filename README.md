@@ -1,16 +1,23 @@
-# React + Vite
+ LifeSet
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Kuch bhi expire ya renew hone se pehle alert.
 
-Currently, two official plugins are available:
+A reminder app for bills, recharges, subscriptions, warranties and birthdays.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Live demo: https://life-set-virid.vercel.app/
 
-## React Compiler
+ Features
+- Add, edit and delete reminders
+- Repeat: daily, weekly, monthly, yearly
+- Overdue, due today and days-left badges
+- Optional amount and alert options (7 days, 1 day, on the day)
+- Data saved on the device
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Tech
+React + Vite
 
-## Expanding the Oxlint configuration
+Testing
+Test cases and bug reports are tracked in GitHub Issues.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+ Status
+In development. Android app and notifications coming next.
