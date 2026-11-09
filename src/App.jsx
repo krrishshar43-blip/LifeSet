@@ -16,6 +16,13 @@ const CATEGORIES = [
 
 const FILTERS = ["All", "Today", "Upcoming", "Overdue", "Completed"];
 
+// Days before the due date when the user wants an alert (0 = on the day)
+const REMIND_OPTIONS = [
+  { days: 7, label: "7 days before" },
+  { days: 1, label: "1 day before" },
+  { days: 0, label: "On the due date" },
+];
+
 /* ---------- Date helpers (all use LOCAL time, not UTC) ---------- */
 
 const pad = (n) => String(n).padStart(2, "0");
@@ -62,6 +69,14 @@ const nextDate = (iso, repeat, anchorDay) => {
   return iso;
 };
 
+const formatAmount = (amount) =>
+  `₹${Number(amount).toLocaleString("en-IN")}`;
+
+const remindLabel = (days) =>
+  days
+    .map((d) => (d === 0 ? "due date" : `${d}d before`))
+    .join(", ");
+
 /* ---------- Component ---------- */
 
 function App() {
@@ -72,9 +87,9 @@ function App() {
       return savedTasks
         ? JSON.parse(savedTasks)
         : [
-            { id: 1, title: "Pay electricity bill", category: "Bills", date: "2026-11-07", done: false, repeat: "Monthly", anchorDay: 7 },
-            { id: 2, title: "Renew gym membership", category: "Personal", date: "2026-11-08", done: false, repeat: "None", anchorDay: 8 },
-            { id: 3, title: "Complete college assignment", category: "Study", date: "2026-11-06", done: true, repeat: "None", anchorDay: 6 },
+            { id: 1, title: "Pay electricity bill", category: "Bills", date: "2026-11-07", done: false, repeat: "Monthly", anchorDay: 7, amount: null, remindBefore: [1, 0] },
+            { id: 2, title: "Renew gym membership", category: "Personal", date: "2026-11-08", done: false, repeat: "None", anchorDay: 8, amount: null, remindBefore: [1, 0] },
+            { id: 3, title: "Complete college assignment", category: "Study", date: "2026-11-06", done: true, repeat: "None", anchorDay: 6, amount: null, remindBefore: [1, 0] },
           ];
     } catch {
       return [];
@@ -85,6 +100,8 @@ function App() {
   const [category, setCategory] = useState("Personal");
   const [date, setDate] = useState("");
   const [repeat, setRepeat] = useState("None");
+  const [amount, setAmount] = useState("");
+  const [remindBefore, setRemindBefore] = useState([1, 0]);
   const [filter, setFilter] = useState("All");
   const [editingId, setEditingId] = useState(null);
 
@@ -99,13 +116,25 @@ function App() {
     setCategory("Personal");
     setDate("");
     setRepeat("None");
+    setAmount("");
+    setRemindBefore([1, 0]);
     setEditingId(null);
+  };
+
+  const toggleRemind = (days) => {
+    setRemindBefore((prev) =>
+      prev.includes(days)
+        ? prev.filter((d) => d !== days)
+        : [...prev, days].sort((a, b) => b - a)
+    );
   };
 
   const addTask = (e) => {
     e.preventDefault();
 
     if (!title.trim() || !date) return;
+
+    const amountValue = amount === "" ? null : Number(amount);
 
     if (editingId !== null) {
       setTasks(
@@ -118,6 +147,8 @@ function App() {
                 date,
                 repeat,
                 anchorDay: Number(date.split("-")[2]),
+                amount: amountValue,
+                remindBefore,
               }
             : task
         )
@@ -132,6 +163,8 @@ function App() {
           date,
           repeat,
           anchorDay: Number(date.split("-")[2]),
+          amount: amountValue,
+          remindBefore,
           done: false,
         },
       ]);
@@ -145,6 +178,8 @@ function App() {
     setCategory(task.category);
     setDate(task.date);
     setRepeat(task.repeat || "None");
+    setAmount(task.amount === null || task.amount === undefined ? "" : String(task.amount));
+    setRemindBefore(task.remindBefore || []);
     setEditingId(task.id);
   };
 
@@ -330,7 +365,14 @@ function App() {
                       {task.category} · {formatDate(task.date)}
                       {task.repeat && task.repeat !== "None" ? ` · ${task.repeat}` : ""}
                     </small>
+                    {task.remindBefore && task.remindBefore.length > 0 && (
+                      <small>Alerts: {remindLabel(task.remindBefore)}</small>
+                    )}
                   </div>
+
+                  {task.amount !== null && task.amount !== undefined && (
+                    <span className="amount">{formatAmount(task.amount)}</span>
+                  )}
 
                   {getBadge(task)}
 
@@ -380,6 +422,18 @@ function App() {
                 ))}
               </select>
 
+              <label htmlFor="amount">Amount (optional)</label>
+              <input
+                id="amount"
+                className="form-input"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="e.g. 649"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+
               <label htmlFor="date">Due date</label>
               <input
                 id="date"
@@ -403,6 +457,20 @@ function App() {
                 <option value="Monthly">Monthly</option>
                 <option value="Yearly">Yearly</option>
               </select>
+
+              <span className="field-label">Remind me</span>
+              <div className="remind-group">
+                {REMIND_OPTIONS.map((option) => (
+                  <label className="remind-option" key={option.days}>
+                    <input
+                      type="checkbox"
+                      checked={remindBefore.includes(option.days)}
+                      onChange={() => toggleRemind(option.days)}
+                    />
+                    {option.label}
+                  </label>
+                ))}
+              </div>
 
               <button className="add-button" type="submit">
                 {editingId !== null ? "Save changes" : "+ Add reminder"}

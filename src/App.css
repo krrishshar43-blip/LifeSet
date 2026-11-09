@@ -651,3 +651,40 @@ body {
 .cancel-button:hover {
   background: #f5f4fa;
 }
+
+add-panel .field-label {
+  display: block;
+  font-size: 12px;
+  color: #55536b;
+  margin-bottom: 10px;
+}
+ 
+.remind-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+ 
+.add-panel .remind-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #55536b;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+ 
+.remind-option input {
+  accent-color: #8063d8;
+  width: 16px;
+  height: 16px;
+}
+ 
+.amount {
+  font-size: 13px;
+  font-weight: 700;
+  color: #29253f;
+  white-space: nowrap;
+}
