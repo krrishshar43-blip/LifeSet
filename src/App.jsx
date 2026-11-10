@@ -68,8 +68,8 @@ const nextDate = (iso, repeat, anchorDay) => {
 
   return iso;
 };
-
-const formatAmount = (amount) => {
+ 
+   const formatAmount = (amount) => {
   const n = Number(amount);
   return `₹${n.toLocaleString("en-IN", {
     minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
