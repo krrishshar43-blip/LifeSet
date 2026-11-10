@@ -7,9 +7,9 @@ A reminder app for bills, recharges, subscriptions, warranties, and birthdays.
 **Live demo:** https://life-set-virid.vercel.app/
 
 ## Features
-- Add, edit, and delete reminders
+- Add, edit and delete reminders
 - Repeat: daily, weekly, monthly, yearly
-- Overdue, due today, and days-left badges
+- Overdue, due today and days-left badges
 - Optional amount and alert options (7 days, 1 day, on the day)
 - Data saved on the device
 
@@ -17,7 +17,15 @@ A reminder app for bills, recharges, subscriptions, warranties, and birthdays.
 React + Vite
 
 ## Testing
-Test cases and bug reports are tracked in GitHub Issues.
+I tested LifeSet manually and tracked the results.
+
+- 45 test cases covering add/edit/delete, amount, alerts, repeat logic, filters, badges, data persistence and mobile layout
+- Result: 44 passed, 1 blocked (needs system clock change), 0 failed after fixes
+- Bugs found were reported as GitHub Issues and closed after re-testing
+
+**Test case sheet:** https://docs.google.com/spreadsheets/d/1X5Gv14-VjqEmNHrjTkpNFoQuEzKBkbSlBvjghe25UJI/edit?usp=sharing
+
+![Test summary](docs/test-summary.png)
 
 ## Status
 In development. Android app and notifications coming next.
