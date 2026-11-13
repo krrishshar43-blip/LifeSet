@@ -688,3 +688,20 @@ add-panel .field-label {
   color: #29253f;
   white-space: nowrap;
 }
+
+/* ===== Notification bar (paste at the very END of App.css) ===== */
+
+.notif-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: #ffffff;
+  border: 1px solid #e9e8f1;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 22px;
+  font-size: 13px;
+  color: #55536b;
+}

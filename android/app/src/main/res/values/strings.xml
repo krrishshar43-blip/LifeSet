@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">LifeSet</string>
+    <string name="title_activity_main">LifeSet</string>
+    <string name="package_name">com.krish.lifeset</string>
+    <string name="custom_url_scheme">com.krish.lifeset</string>
+</resources>

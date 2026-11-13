@@ -8,6 +8,12 @@ import {
   formatAmount,
   remindLabel,
 } from "./dateUtils";
+import {
+  isNativeApp,
+  setupNotifications,
+  syncNotifications,
+  sendTestNotification,
+} from "./notifications";
 
 const CATEGORIES = [
   "Bills",
@@ -62,6 +68,19 @@ function App() {
   useEffect(() => {
     localStorage.setItem("lifeset_tasks", JSON.stringify(tasks));
   }, [tasks]);
+
+  const [notifOn, setNotifOn] = useState(false);
+  const [testSent, setTestSent] = useState(false);
+
+  // Ask for notification permission once, when the app opens (Android app only)
+  useEffect(() => {
+    setupNotifications().then(setNotifOn);
+  }, []);
+
+  // Re-schedule alerts whenever reminders change
+  useEffect(() => {
+    if (notifOn) syncNotifications(tasks);
+  }, [tasks, notifOn]);
 
   const today = getToday();
 
@@ -259,6 +278,28 @@ function App() {
           </div>
           <div className="hero-icon">✦</div>
         </section>
+
+        {isNativeApp() && (
+          <section className="notif-bar">
+            <span>
+              {notifOn
+                ? "🔔 Notifications are on"
+                : "🔕 Notifications are off. Allow them in phone Settings."}
+            </span>
+            {notifOn && (
+              <button
+                type="button"
+                className="edit"
+                onClick={async () => {
+                  const ok = await sendTestNotification();
+                  setTestSent(ok);
+                }}
+              >
+                {testSent ? "Test sent (wait 10 s)" : "Send test notification"}
+              </button>
+            )}
+          </section>
+        )}
 
         <section className="stats">
           <div className="stat-card">
